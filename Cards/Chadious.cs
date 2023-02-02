@@ -47,7 +47,7 @@ namespace ChadVanilla.Cards
         }
         protected override GameObject GetCardArt()
         {
-            return null;
+            return ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Chadious");
         }
         protected override string GetDescription()
         {

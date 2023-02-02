@@ -23,7 +23,7 @@ namespace ChadVanilla
     {
         private const string ModId = "koala.vanilla.chad";
         private const string ModName = "Chad Vanilla";
-        public const string Version = "1.1.0";
+        public const string Version = "1.2.0";
         public const string ModInitials = "CHAD";
 
         internal static ChadVanilla instance;
@@ -35,11 +35,18 @@ namespace ChadVanilla
             harmony.PatchAll();
             instance = this;
 
+            ChadVanilla.ArtAssets = AssetUtils.LoadAssetBundleFromResources("chadvan", typeof(ChadVanilla).Assembly);
+
+            if (ChadVanilla.ArtAssets == null)
+            {
+                UnityEngine.Debug.Log("Chad Vanilla art asset bundle either doesn't exist or failed to load.");
+            }
 
             CustomCard.BuildCard<Chadious>((card) => Chadious.card = card);
 
         }
 
         public static bool Debug = false;
+        internal static AssetBundle ArtAssets;
     }
 }
