@@ -1,12 +1,7 @@
 ﻿using BepInEx;
 using HarmonyLib;
 using ChadVanilla.Cards;
-using UnboundLib;
 using UnboundLib.Cards;
-using UnboundLib.GameModes;
-using UnboundLib.Utils;
-using RarityLib;
-using RarityLib.Utils;
 using Jotunn.Utils;
 using UnityEngine;
 
@@ -34,7 +29,7 @@ namespace ChadVanilla
             var harmony = new Harmony(ModId);
             harmony.PatchAll();
             instance = this;
-
+            
             ChadVanilla.ArtAssets = AssetUtils.LoadAssetBundleFromResources("chadvan", typeof(ChadVanilla).Assembly);
 
             if (ChadVanilla.ArtAssets == null)

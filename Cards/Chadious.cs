@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using UnboundLib;
 using UnboundLib.Cards;
 using UnityEngine;
-using RarityLib;
 using RarityLib.Utils;
-using ClassesManagerReborn;
 
 namespace ChadVanilla.Cards
 {
@@ -58,7 +50,7 @@ namespace ChadVanilla.Cards
             return new [] {
                 new CardInfoStat
                 {
-                    amount = "10 Times",
+                    amount = "* 10",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
                     stat = "Vanilla Card Chance"
