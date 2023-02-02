@@ -67,7 +67,7 @@ namespace ChadVanilla.Cards
         }
         protected override CardInfo.Rarity GetRarity()
         {
-            return CardInfo.Rarity.Rare;
+            return RarityUtils.GetRarity("Epic");
         }
         protected override CardThemeColor.CardThemeColorType GetTheme()
         {
