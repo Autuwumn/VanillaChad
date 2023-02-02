@@ -36,8 +36,6 @@ namespace ChadVanilla
             if (ChadVanilla.ArtAssets == null)
             {
                 UnityEngine.Debug.Log("Chad Vanilla art asset bundle either doesn't exist or failed to load.");
-            } else {
-                UnityEngine.Debug.Log("Chad Vanilla art assest have been loaded");
             }
 
             CustomCard.BuildCard<Chadious>((card) => Chadious.card = card);
