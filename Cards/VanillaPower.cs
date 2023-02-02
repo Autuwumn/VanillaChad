@@ -5,13 +5,13 @@ using RarityLib.Utils;
 
 namespace ChadVanilla.Cards
 {
-    class Chadious : CustomCard
+    class VanPower : CustomCard
     {
         //when extening this class, you only need to override the methods you need to change
         internal static CardInfo card = null;
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            cardInfo.allowMultiple = false;
+            cardInfo.allowMultiple = true;
         }
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
@@ -39,21 +39,28 @@ namespace ChadVanilla.Cards
         }
         protected override GameObject GetCardArt()
         {
-            return ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_TrulyChad");
+            return ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Gladious");
         }
         protected override string GetDescription()
         {
-            return "Become a true vanilla chad";
+            return "Gain stats for every vanilla card";
         }
         protected override CardInfoStat[] GetStats()
         {
             return new [] {
                 new CardInfoStat
                 {
-                    amount = "* 10",
+                    amount = "+1%",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
-                    stat = "Vanilla Cards"
+                    stat = "Basic Stats"
+                },
+                new CardInfoStat
+                {
+                    amount = null,
+                    positive = true,
+                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
+                    stat = "per vanila card"
                 }
             };
         }
@@ -67,7 +74,7 @@ namespace ChadVanilla.Cards
         }
         protected override string GetTitle()
         {
-            return "Vanilla Chad" ;
+            return "Vanilla Power" ;
         }
         public override string GetModName()
         {

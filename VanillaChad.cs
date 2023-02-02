@@ -23,6 +23,7 @@ namespace ChadVanilla
 
         internal static ChadVanilla instance;
 
+        internal static AssetBundle ArtAssets;
 
         void Start()
         {
@@ -35,6 +36,8 @@ namespace ChadVanilla
             if (ChadVanilla.ArtAssets == null)
             {
                 UnityEngine.Debug.Log("Chad Vanilla art asset bundle either doesn't exist or failed to load.");
+            } else {
+                UnityEngine.Debug.Log("Chad Vanilla art assest have been loaded");
             }
 
             CustomCard.BuildCard<Chadious>((card) => Chadious.card = card);
@@ -42,6 +45,5 @@ namespace ChadVanilla
         }
 
         public static bool Debug = false;
-        internal static AssetBundle ArtAssets;
     }
 }
