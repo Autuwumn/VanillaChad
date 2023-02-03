@@ -2,6 +2,9 @@ using System.Reflection;
 using UnboundLib.Cards;
 using UnityEngine;
 using RarityLib.Utils;
+using ModsPlus;
+using UnboundLib;
+using ClassesManagerReborn.Util;
 
 namespace ChadVanilla.Cards
 {
@@ -9,6 +12,10 @@ namespace ChadVanilla.Cards
     {
         //when extening this class, you only need to override the methods you need to change
         internal static CardInfo card = null;
+        public override void Callback()
+        {
+            gameObject.GetOrAddComponent<ClassNameMono>();
+        }
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             cardInfo.allowMultiple = false;
