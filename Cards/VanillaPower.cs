@@ -2,6 +2,11 @@ using System.Reflection;
 using UnboundLib.Cards;
 using UnityEngine;
 using RarityLib.Utils;
+using ChadVanilla.IHook;
+using UnboundLib;
+using VanillaChad.MonoBehaviors;
+using ModsPlus;
+using System.Linq;
 
 namespace ChadVanilla.Cards
 {
@@ -9,33 +14,18 @@ namespace ChadVanilla.Cards
     {
         //when extening this class, you only need to override the methods you need to change
         internal static CardInfo card = null;
+
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             cardInfo.allowMultiple = true;
         }
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            if (player.data.view.IsMine)
-            {
-                var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-                var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
-                foreach (var vc in vanillaCards)
-                {
-                    RarityUtils.AjustCardRarityModifier(vc, 0.0f, 9.0f);
-                }
-            }
+            var mono = player.gameObject.GetOrAddComponent<VanillaPower_Mono>();
         }
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            if (player.data.view.IsMine)
-            {
-                var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-                var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
-                foreach (var vc in vanillaCards)
-                {
-                    RarityUtils.AjustCardRarityModifier(vc, 0.0f, -9.0f);
-                }
-            }
+            
         }
         protected override GameObject GetCardArt()
         {
@@ -43,24 +33,17 @@ namespace ChadVanilla.Cards
         }
         protected override string GetDescription()
         {
-            return "Gain stats for every vanilla card";
+            return "Gain compounding stats for every vanilla card owned";
         }
         protected override CardInfoStat[] GetStats()
         {
             return new [] {
                 new CardInfoStat
                 {
-                    amount = "+1%",
+                    amount = "+5%",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
-                    stat = "Basic Stats"
-                },
-                new CardInfoStat
-                {
-                    amount = null,
-                    positive = true,
-                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
-                    stat = "per vanila card"
+                    stat = "basic stats per"
                 }
             };
         }
@@ -85,5 +68,58 @@ namespace ChadVanilla.Cards
         {
             return T.Name.Replace('_', ' '); ;
         }*/
+    }
+}
+
+namespace VanillaChad.MonoBehaviors
+{
+    [DisallowMultipleComponent]
+    public class VanillaPower_Mono : PlayerHook, IPointEndHookHandler, IPointStartHookHandler
+    {
+        private void OnStart()
+        {
+            InterfaceGameModeHooksManager.instance.RegisterHooks(this);
+        }
+
+        public void OnPointStart()
+        {
+            double vanCards = 0.0;
+            for (int i = 0; i < player.data.currentCards.Count; i++)
+            {
+                var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
+                foreach (var vc in vanillaCards)
+                {
+                    if (player.data.currentCards[i].cardName == vc.cardName)
+                    {
+                        vanCards++;
+                    }
+                }
+            }
+            float multiplier = (float)System.Math.Pow(1.05,vanCards);
+            gun.damage*=multiplier;
+            gun.attackSpeed/=multiplier;
+            gun.reloadTime/=multiplier;
+        }
+        public void OnPointEnd()
+        {
+            double vanCards = 0.0;
+            for (int i = 0; i < player.data.currentCards.Count; i++)
+            {
+                var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
+                foreach (var vc in vanillaCards)
+                {
+                    if (player.data.currentCards[i].cardName == vc.cardName)
+                    {
+                        vanCards++;
+                    }
+                }
+            }
+            var multiplier = (float)System.Math.Pow(1.05,vanCards);   
+            gun.damage/=multiplier;
+            gun.attackSpeed*=multiplier;
+            gun.reloadTime*=multiplier;
+        }
     }
 }

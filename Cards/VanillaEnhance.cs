@@ -5,7 +5,7 @@ using RarityLib.Utils;
 
 namespace ChadVanilla.Cards
 {
-    class Chadious : CustomCard
+    class VanilllaEnhance : CustomCard
     {
         //when extening this class, you only need to override the methods you need to change
         internal static CardInfo card = null;
@@ -50,7 +50,7 @@ namespace ChadVanilla.Cards
             return new [] {
                 new CardInfoStat
                 {
-                    amount = "Increased",
+                    amount = "10x",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
                     stat = "Vanilla Card Chance"

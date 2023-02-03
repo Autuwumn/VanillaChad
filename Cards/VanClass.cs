@@ -9,8 +9,9 @@ namespace ChadVanilla.Cards
 
         public override IEnumerator Init()
         {
-            while (!(Chadious.card)) yield return null;
+            while (!(Chadious.card&&VanPower.card)) yield return null;
             ClassesRegistry.Register(Chadious.card, CardType.Entry);
+            ClassesRegistry.Register(VanPower.card, CardType.Card, Chadious.card, 5);
         }
     }
 }

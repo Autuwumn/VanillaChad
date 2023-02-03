@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ModsPlus">
+      <HintPath>C:\Users\joshu\AppData\Roaming\r2modmanPlus-local\ROUNDS\profiles\Default\BepInEx\plugins\willis81808-ModsPlus\ModsPlus.dll</HintPath>
+    </Reference>
     <Reference Include="UnboundLib">
       <HintPath>C:\Users\joshu\AppData\Roaming\r2modmanPlus-local\ROUNDS\profiles\Default\BepInEx\plugins\willis81808-UnboundLib\UnboundLib.dll</HintPath>
     </Reference>

@@ -12,13 +12,14 @@ namespace ChadVanilla
     [BepInDependency("root.classes.manager.reborn", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("root.rarity.lib", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.CrazyCoders.Rounds.RarityBundle", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("com.willis.rounds.modsplus", BepInDependency.DependencyFlags.HardDependency)]
     [BepInPlugin(ModId, ModName, Version)]
     [BepInProcess("Rounds.exe")]
     public class ChadVanilla : BaseUnityPlugin
     {
         private const string ModId = "koala.vanilla.chad";
         private const string ModName = "Chad Vanilla";
-        public const string Version = "1.3.0";
+        public const string Version = "1.4.0";
         public const string ModInitials = "CHAD";
 
         internal static ChadVanilla instance;
@@ -39,9 +40,9 @@ namespace ChadVanilla
             }
 
             CustomCard.BuildCard<Chadious>((card) => Chadious.card = card);
+            CustomCard.BuildCard<VanPower>((card) => VanPower.card = card);
 
         }
-
         public static bool Debug = false;
     }
 }
