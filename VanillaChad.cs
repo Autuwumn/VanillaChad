@@ -4,6 +4,7 @@ using ChadVanilla.Cards;
 using UnboundLib.Cards;
 using Jotunn.Utils;
 using UnityEngine;
+using ModsPlus;
 
 namespace ChadVanilla
 {
@@ -39,8 +40,8 @@ namespace ChadVanilla
                 UnityEngine.Debug.Log("Chad Vanilla art asset bundle either doesn't exist or failed to load.");
             }
 
-            CustomCard.BuildCard<Chadious>((card) => Chadious.card = card);
-            CustomCard.BuildCard<VanPower>((card) => VanPower.card = card);
+            CustomCard.BuildCard<Chadious>(c => c.SetAbbreviation("VC"));
+            CustomCard.BuildCard<VanPower>(c => c.SetAbbreviation("VP"));
 
         }
         public static bool Debug = false;
