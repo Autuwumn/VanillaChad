@@ -5,7 +5,6 @@ using UnboundLib.Cards;
 using Jotunn.Utils;
 using UnityEngine;
 using ModsPlus;
-using ChadVanilla.IHook;
 
 namespace ChadVanilla
 {
@@ -34,7 +33,6 @@ namespace ChadVanilla
             harmony.PatchAll();
             instance = this;
             
-            gameObject.AddComponent<InterfaceGameModeHooksManager>();
             
             ChadVanilla.ArtAssets = AssetUtils.LoadAssetBundleFromResources("chadvan", typeof(ChadVanilla).Assembly);
 
@@ -46,7 +44,7 @@ namespace ChadVanilla
             CustomCard.BuildCard<Chadious>((card) => {Chadious.card = card; card.SetAbbreviation("VC");});
             CustomCard.BuildCard<VanPower>((card) => {VanPower.card = card; card.SetAbbreviation("VP");});
             CustomCard.BuildCard<VanEnhance>((card) => {VanEnhance.card = card; card.SetAbbreviation("VE");});
-            CustomCard.BuildCard<VanThief>((card) => {VanThief.card = card; card.SetAbbreviation("VT");});
+            //CustomCard.BuildCard<VanThief>((card) => {VanThief.card = card; card.SetAbbreviation("VT");});
 
         }
         public static bool Debug = false;

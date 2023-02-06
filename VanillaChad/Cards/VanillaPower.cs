@@ -1,7 +1,6 @@
 using System.Reflection;
 using UnityEngine;
 using RarityLib.Utils;
-using ChadVanilla.IHook;
 using UnboundLib;
 using VanillaChad.MonoBehaviors;
 using ModsPlus;
@@ -9,7 +8,7 @@ using ClassesManagerReborn.Util;
 
 namespace ChadVanilla.Cards
 {
-    class VanPower : SimpleCard
+    class VanPower : CustomEffectCard<VanPower_Mono>
     {
         internal static CardInfo card = null;
         public override void Callback()
@@ -35,30 +34,14 @@ namespace ChadVanilla.Cards
                 }
             }
         };
-        public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
-        {
-            cardInfo.allowMultiple = true;
-        }
-        protected override void Added(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
-        {
-            player.gameObject.GetOrAddComponent<VanillaPower_Mono>();
-        }
-        protected override void Removed(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
-        {
-            Destroy(player.gameObject.GetOrAddComponent<VanillaPower_Mono>());
-        }
     }
 }
 
 namespace VanillaChad.MonoBehaviors
 {   
     [DisallowMultipleComponent]
-    public class VanillaPower_Mono : PlayerHook, IPointStartHookHandler
+    public class VanPower_Mono : CardEffect
     {
-        protected override void Start()
-        {
-            InterfaceGameModeHooksManager.instance.RegisterHooks(this);
-        }
         private void GiveBuffs()
         {
             double vanCards = 0.0;
@@ -93,11 +76,8 @@ namespace VanillaChad.MonoBehaviors
         public void OnPointStart() {
             GiveBuffs();
         }
-        public void OnDeath() {
+        public override void OnRevive() {
             GiveBuffs();
-        }
-        public void OnOnDestroy() {
-            InterfaceGameModeHooksManager.instance.RemoveHooks(this);
         }
     }
 }

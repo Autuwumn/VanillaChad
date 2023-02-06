@@ -1,16 +1,14 @@
 using System.Reflection;
 using UnityEngine;
 using RarityLib.Utils;
-using ChadVanilla.IHook;
 using UnboundLib;
 using VanillaChad.MonoBehaviors;
 using ModsPlus;
 using ClassesManagerReborn.Util;
-using UnboundLib.GameModes;
 
 namespace ChadVanilla.Cards
 {
-    class VanEnhance : SimpleCard
+    class VanEnhance :  CustomEffectCard<VanEnhance_Mono>
     {
         //when extening this class, you only need to override the methods you need to change
         internal static CardInfo card = null;
@@ -45,30 +43,14 @@ namespace ChadVanilla.Cards
                 }
             }
         };
-        public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
-        {
-            cardInfo.allowMultiple = true;
-        }
-        protected override void Added(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
-        {
-            player.gameObject.GetOrAddComponent<VanEnhance_Mono>();
-        }
-        protected override void Removed(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
-        {
-            Destroy(player.gameObject.GetOrAddComponent<VanEnhance_Mono>());
-        }
     }
 }
 
 namespace VanillaChad.MonoBehaviors
 {   
     [DisallowMultipleComponent]
-    public class VanEnhance_Mono : PlayerHook, IPointEndHookHandler, IPointStartHookHandler
+    public class VanEnhance_Mono : CardEffect
     {
-        protected override void Start()
-        {
-            InterfaceGameModeHooksManager.instance.RegisterHooks(this);
-        }
         internal static int bounces = 0;
         private void GiveBuffs()
         {
@@ -357,16 +339,14 @@ namespace VanillaChad.MonoBehaviors
         public void OnPointStart() {
             GiveBuffs();
             gun.reflects+=bounces;
-        }
-        public void OnDeath() {
+        }       
+        public override void OnRevive() {
             GiveBuffs();
         }
         public void OnPointEnd()
         {
             gun.reflects-=bounces;
         }
-        public void OnOnDestroy() {
-            InterfaceGameModeHooksManager.instance.RemoveHooks(this);
-        }
     }
 }
+    
