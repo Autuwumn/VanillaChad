@@ -19,7 +19,7 @@ namespace ChadVanilla.Cards
         {
             Title       = "Vanilla Power",
             Description = "Gain compounding stats for every vanilla card owned",
-            ModName     = "CHAD",
+            ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Gladious"),
             Rarity      = RarityUtils.GetRarity("Epic"),
             Theme       = CardThemeColor.CardThemeColorType.TechWhite,
@@ -62,15 +62,20 @@ namespace VanillaChad.MonoBehaviors
                     vanPowers++;
                 }
             }
-            float multiplier = (float)System.Math.Pow(1.05,vanCards)*(float)vanPowers;
+            double numboo = System.Math.Pow(1.05,(1.0+vanPowers)/2.0);
+            float multiplier = (float)System.Math.Pow(numboo,vanCards);
             StatChanges stuffs = new StatChanges() {
                 Damage = multiplier,
                 AttackSpeed = 1/multiplier,
                 MaxHealth = multiplier,
-                MovementSpeed = multiplier/2,
-                JumpHeight = multiplier/2
+                MovementSpeed = 1+(1-multiplier)/2,
+                JumpHeight = 1+(1-multiplier/2)
             };
-            StatManager.Apply(player, stuffs);  
+            StatManager.Apply(player, stuffs);
+            StutChanges scuffed = new StutChanges() {
+                ReloadTimeMult = 1/multiplier
+            };
+            StutManager.Apply(player, scuffed);
         }
 
         public void OnPointStart() {

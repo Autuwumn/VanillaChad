@@ -6,7 +6,7 @@ Adds 1 Class and 4 Cards
 
 - Vanilla Power
 	- Grants 5% compounding stats for every vanilla card you have
-	- Currently effects damage, attack speed, health, move speed, and jump height
+	- Currently effects damage, attack speed, reload time, health, move speed, and jump height
 - Vanilla Enhancer
 	- Buffs positive vanilla card stats by 20% compounding
 	- Reduces negative effects of vanilla cards by 10% compounding

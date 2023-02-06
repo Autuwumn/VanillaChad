@@ -20,11 +20,10 @@ namespace ChadVanilla
     {
         private const string ModId = "koala.vanilla.chad";
         private const string ModName = "Chad Vanilla";
-        public const string Version = "1.5.3";
+        public const string Version = "1.5.4";
         public const string ModInitials = "CHAD";
 
         internal static ChadVanilla instance;
-
         internal static AssetBundle ArtAssets;
 
         void Start()

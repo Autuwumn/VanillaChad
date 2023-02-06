@@ -14,13 +14,13 @@ namespace ChadVanilla.Cards
         internal static CardInfo card = null;
         public override void Callback()
         {
-            gameObject.GetOrAddComponent<ClassNameMono>();
+            gameObject.GetOrAddComponent<ClassNameMono>().className = VanClass.name;
         }
         public override CardDetails Details => new CardDetails
         {
             Title       = "Vanilla Thief",
             Description = "Steal some vanilla cards from other players",
-            ModName     = "CHAD",
+            ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Thiefy"),
             Rarity      = RarityUtils.GetRarity("Epic"),
             Theme       = CardThemeColor.CardThemeColorType.TechWhite,

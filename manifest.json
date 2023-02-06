@@ -1,6 +1,6 @@
 {
     "name": "VanillaChad",
-    "version_number": "1.5.3",
+    "version_number": "1.5.4",
     "website_url": "https://github.com/Autuwumn/VanillaChad",
     "description": "A class for those chads who use vanilla cards",
     "dependencies": [

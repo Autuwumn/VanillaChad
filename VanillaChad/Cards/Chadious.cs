@@ -18,7 +18,7 @@ namespace ChadVanilla.Cards
         {
             Title       = "Vanilla Chad",
             Description = "Become a true vanilla chad",
-            ModName     = "CHAD",
+            ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_TrulyChad"),
             Rarity      = RarityUtils.GetRarity("Epic"),
             Theme       = CardThemeColor.CardThemeColorType.TechWhite,

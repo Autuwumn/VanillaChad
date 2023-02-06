@@ -21,7 +21,7 @@ namespace ChadVanilla.Cards
         {
             Title       = "Vanilla Enhance",
             Description = "Enhance your vanilla cards",
-            ModName     = "CHAD",
+            ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Enhancer"),
             Rarity      = RarityUtils.GetRarity("Epic"),
             Theme       = CardThemeColor.CardThemeColorType.TechWhite,
@@ -61,22 +61,7 @@ namespace VanillaChad.MonoBehaviors
             for (int i = 0; i < player.data.currentCards.Count; i++) if (player.data.currentCards[i].cardName.ToLower() == "Vanilla Enhance".ToLower()) boost++;
             float posMult = (float)System.Math.Pow(1.2,boost);
             float negMult = (float)System.Math.Pow(1.1,boost);
-            StatChanges stoofs = new StatChanges{      
-                Bullets = 0,
-                Jumps = 0,
-                MaxAmmo = 0,
-
-                AttackSpeed = 1.0f,
-                PlayerGravity = 1.0f,
-                MovementSpeed = 1.0f,
-                ProjectileGravity = 1.0f,
-                Damage = 1.0f,
-                PlayerSize = 1.0f,
-                MaxHealth = 1.0f,
-                BulletSpread = 1.0f,
-                BulletSpeed = 1.0f,
-                JumpHeight = 1.0f
-            };
+            StatChanges stoofs = new StatChanges{};
             for (int i = 0; i < player.data.currentCards.Count; i++)
             {
                 /**foreach (var vc in vanillaCards)
