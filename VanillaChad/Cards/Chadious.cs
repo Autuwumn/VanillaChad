@@ -26,7 +26,7 @@ namespace ChadVanilla.Cards
             {
                 new CardInfoStat
                 {
-                    amount = "Increased",
+                    amount = "Highly Increased",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
                     stat = "Vanilla Card Chance"

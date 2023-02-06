@@ -13,6 +13,7 @@ namespace ChadVanilla.Cards
             ClassesRegistry.Register(Chadious.card, CardType.Entry);
             ClassesRegistry.Register(VanPower.card, CardType.Card, Chadious.card, 5);
             ClassesRegistry.Register(VanEnhance.card, CardType.Card, Chadious.card, 5);
+            ClassesRegistry.Register(VanThief.card, CardType.Card, Chadious.card);
         }
     }
 }

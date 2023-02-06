@@ -6,6 +6,7 @@ using UnboundLib;
 using VanillaChad.MonoBehaviors;
 using ModsPlus;
 using ClassesManagerReborn.Util;
+using UnboundLib.GameModes;
 
 namespace ChadVanilla.Cards
 {
@@ -13,6 +14,7 @@ namespace ChadVanilla.Cards
     {
         //when extening this class, you only need to override the methods you need to change
         internal static CardInfo card = null;
+        
         public override void Callback()
         {
             gameObject.GetOrAddComponent<ClassNameMono>().className = VanClass.name;
@@ -63,6 +65,10 @@ namespace VanillaChad.MonoBehaviors
     [DisallowMultipleComponent]
     public class VanEnhance_Mono : PlayerHook, IPointEndHookHandler, IPointStartHookHandler
     {
+        protected override void Start()
+        {
+            InterfaceGameModeHooksManager.instance.RegisterHooks(this);
+        }
         internal static int bounces = 0;
         private void GiveBuffs()
         {
@@ -99,7 +105,7 @@ namespace VanillaChad.MonoBehaviors
                 }**/
                 switch(player.data.currentCards[i].cardName.ToLower())
                 {
-                    case "abyssal countdown":
+                    case "abyssalcountdown":
                         // N/A
                     break;
                     case "barrage":
@@ -110,7 +116,7 @@ namespace VanillaChad.MonoBehaviors
                     case "big bullet":
                         // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
                     break;
-                    case "bombs away":
+                    case "bombsaway":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
                     break;
                     case "bouncy":
@@ -141,7 +147,7 @@ namespace VanillaChad.MonoBehaviors
                     case "chase":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
                     break;
-                    case "chilling presence":
+                    case "chillingpresence":
                         stoofs.MaxHealth*=1.0f+(0.25f*posMult-0.25f);
                     break;
                     case "cold bullets":
@@ -168,7 +174,7 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.MaxAmmo+=(int)(boost*2.0f);
                         // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
                     break;
-                    case "drill ammo":
+                    case "drillammo":
                         // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "echo":
@@ -184,7 +190,7 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.AttackSpeed/=1.0f+(1.0f*negMult-1.0f);
                         // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
                     break;
-                    case "fastball":
+                    case "fast ball":
                         stoofs.BulletSpeed*=1.0f+(1.5f*posMult-1.5f);
                         stoofs.AttackSpeed/=1.0f+(0.5f*negMult-0.5f);
                         // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
@@ -197,7 +203,7 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
                         // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
                     break;
-                    case "glass cannon":
+                    case "glasscannon":
                         stoofs.Damage*=1.0f+(1.0f*posMult-1.0f);
                         stoofs.MaxHealth*=1.0f+(1.0f*negMult-1.0f);
                     break;
@@ -240,7 +246,7 @@ namespace VanillaChad.MonoBehaviors
                     case "phoenix":
                         stoofs.MaxHealth*=1.0f+(0.35f*negMult-0.35f);
                     break;
-                    case "poison":
+                    case "poison bullets":
                         stoofs.Damage*=1.0f+(0.7f*posMult-0.7f);
                         if (boost > 3) stoofs.MaxAmmo++;
                     break;
@@ -253,7 +259,7 @@ namespace VanillaChad.MonoBehaviors
                     case "quick shot":
                         stoofs.BulletSpeed*=1.0f+(1.5f*posMult-1.5f);
                     break;
-                    case "radar shot":
+                    case "radarshot":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
                     break;
                     case "radiance":
@@ -287,7 +293,7 @@ namespace VanillaChad.MonoBehaviors
                     case "silence":
                         stoofs.MaxHealth*=1.0f+(0.25f*posMult-0.25f);
                     break;
-                    case "sneaky":
+                    case "sneaky bullets":
                         // N/A
                     break;
                     case "spray":
@@ -312,11 +318,11 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.MaxHealth*=1.0f+(1.0f*posMult-1.0f);
                         stoofs.AttackSpeed/=1.0f+(0.25f*posMult-0.25f);
                     break;
-                    case "target bounce":
+                    case "targetbounce":
                         if (boost > 3) bounces++;
                         stoofs.Damage*=1.0f+(0.2f*negMult-0.2f);
                     break;
-                    case "taste of blood":
+                    case "tasteofblood":
                         // N/A
                     break;
                     case "teleport":
@@ -344,11 +350,13 @@ namespace VanillaChad.MonoBehaviors
                 }
             }
             StatManager.Apply(player, stoofs);
-            gun.reflects+=bounces;
+            UnityEngine.Debug.Log(stoofs.Damage);
+            UnityEngine.Debug.Log(boost);
         }
         
         public void OnPointStart() {
             GiveBuffs();
+            gun.reflects+=bounces;
         }
         public void OnDeath() {
             GiveBuffs();
@@ -356,6 +364,9 @@ namespace VanillaChad.MonoBehaviors
         public void OnPointEnd()
         {
             gun.reflects-=bounces;
+        }
+        public void OnOnDestroy() {
+            InterfaceGameModeHooksManager.instance.RemoveHooks(this);
         }
     }
 }

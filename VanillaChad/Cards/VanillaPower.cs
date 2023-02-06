@@ -55,21 +55,9 @@ namespace VanillaChad.MonoBehaviors
     [DisallowMultipleComponent]
     public class VanillaPower_Mono : PlayerHook, IPointStartHookHandler
     {
-        public int countVanilla() {
-            double vanCards = 0.0;
-            var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
-            for (int i = 0; i < player.data.currentCards.Count; i++)
-            {
-                foreach (var vc in vanillaCards)
-                {
-                    if (player.data.currentCards[i].cardName == vc.cardName)
-                    {
-                        vanCards++;
-                    }
-                }
-            }
-            return (int)vanCards;
+        protected override void Start()
+        {
+            InterfaceGameModeHooksManager.instance.RegisterHooks(this);
         }
         private void GiveBuffs()
         {
@@ -107,6 +95,9 @@ namespace VanillaChad.MonoBehaviors
         }
         public void OnDeath() {
             GiveBuffs();
+        }
+        public void OnOnDestroy() {
+            InterfaceGameModeHooksManager.instance.RemoveHooks(this);
         }
     }
 }
