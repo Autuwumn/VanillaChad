@@ -332,8 +332,6 @@ namespace VanillaChad.MonoBehaviors
                 }
             }
             StatManager.Apply(player, stoofs);
-            UnityEngine.Debug.Log(stoofs.Damage);
-            UnityEngine.Debug.Log(boost);
         }
         
         public void OnPointStart() {
