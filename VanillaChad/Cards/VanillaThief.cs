@@ -106,7 +106,6 @@ namespace ChadVanilla.Cards
                     var removed = ModdingUtils.Utils.Cards.instance.RemoveCardsFromPlayer(kvp.Key, kvp.Value.ToArray());
                     ModdingUtils.Utils.CardBarUtils.instance.ShowImmediate(kvp.Key, removed);
                 }
-
                 ModdingUtils.Utils.Cards.instance.AddCardsToPlayer(player, cardsToAdd.ToArray(), false, null, null, null, true);
                 ModdingUtils.Utils.CardBarUtils.instance.ShowImmediate(player, cardsToAdd.ToArray());
             });
