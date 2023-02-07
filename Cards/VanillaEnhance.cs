@@ -8,7 +8,7 @@ using ClassesManagerReborn.Util;
 
 namespace ChadVanilla.Cards
 {
-    class VanEnhance :  CustomEffectCard<VanEnhance_Mono>
+    class VanEnhan :  CustomEffectCard<VanEnhan_Mono>
     {
         //when extening this class, you only need to override the methods you need to change
         internal static CardInfo card = null;
@@ -49,12 +49,10 @@ namespace ChadVanilla.Cards
 namespace VanillaChad.MonoBehaviors
 {   
     [DisallowMultipleComponent]
-    public class VanEnhance_Mono : CardEffect
+    public class VanEnhan_Mono : CardEffect
     {
-        internal static int bounces = 0;
         private void GiveBuffs()
         {
-            bounces = 0;
             var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
             double boost = 0.0;
@@ -62,6 +60,7 @@ namespace VanillaChad.MonoBehaviors
             float posMult = (float)System.Math.Pow(1.2,boost);
             float negMult = (float)System.Math.Pow(1.1,boost);
             StatChanges stoofs = new StatChanges{};
+            StutChanges scuff = new StutChanges{};
             for (int i = 0; i < player.data.currentCards.Count; i++)
             {
                 /**foreach (var vc in vanillaCards)
@@ -81,15 +80,15 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.Bullets+=(int)(boost/2.0f);
                     break;
                     case "big bullet":
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "bombsaway":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
                     break;
                     case "bouncy":
                         stoofs.Damage*=1.0f+(0.25f*posMult-0.25f);
-                        if (boost > 2) bounces++;
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        if (boost > 2) scuff.Bounces++;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "brawler":
                         // N/A
@@ -98,18 +97,18 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.Damage*=1.0f+(0.6f*negMult-0.6f);
                         stoofs.MaxAmmo+=(int)boost;
                         stoofs.Bullets+=(int)(boost/2.0f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "burst":
                         stoofs.Damage*=1.0f+(0.6f*negMult-0.6f);
                         if (boost > 2) stoofs.Bullets+=1;
                         stoofs.MaxAmmo+=(int)(boost/2.0f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "careful planning":
                         stoofs.Damage*=1.0f+(1.0f*posMult-1.0f);
                         stoofs.AttackSpeed/=1.0f+(1.0f*negMult-1.0f);
-                        // gunAmmo.reloadTimeAdd-=0.05f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "chase":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
@@ -119,15 +118,15 @@ namespace VanillaChad.MonoBehaviors
                     break;
                     case "cold bullets":
                         // gun.slow*=1.0f+(0.7f*posMult-0.7f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "combine":
                         stoofs.Damage*=1.0f+(1.0f*posMult-1.0f);
                         if (boost > 2) stoofs.MaxAmmo++;
-                        // gunAmmo.reloadTimeAdd-=0.05f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "dazzle":
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "decay":
                         stoofs.MaxHealth*=1.0f+(0.5f*posMult-0.5f);
@@ -139,10 +138,10 @@ namespace VanillaChad.MonoBehaviors
                     case "demonic pact":
                         stoofs.Bullets+=(int)(boost*2.0f);
                         stoofs.MaxAmmo+=(int)(boost*2.0f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "drillammo":
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "echo":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
@@ -155,27 +154,27 @@ namespace VanillaChad.MonoBehaviors
                     break;
                     case "explosive bullet":
                         stoofs.AttackSpeed/=1.0f+(1.0f*negMult-1.0f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "fast ball":
                         stoofs.BulletSpeed*=1.0f+(1.5f*posMult-1.5f);
                         stoofs.AttackSpeed/=1.0f+(0.5f*negMult-0.5f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "fast forward":
                         stoofs.BulletSpeed*=1.0f+(1.0f*posMult-1.0f);
-                        // gunAmmo.reloadTimeMultiplier+=1.0f+(0.3f*posMult-0.3f);
+                        scuff.ReloadTimeMult/=1.0f+(0.3f*posMult-0.3f);
                     break;
                     case "frost slam":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "glasscannon":
                         stoofs.Damage*=1.0f+(1.0f*posMult-1.0f);
                         stoofs.MaxHealth*=1.0f+(1.0f*negMult-1.0f);
                     break;
                     case "grow":
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "healing field":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
@@ -183,7 +182,7 @@ namespace VanillaChad.MonoBehaviors
                     case "homing":
                         stoofs.Damage*=1.0f+(0.25f*negMult-0.25f);
                         stoofs.AttackSpeed/=1.0f+(0.5f*negMult-0.5f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "huge":
                         stoofs.MaxHealth*=1.0f+(0.8f*posMult-0.8f);
@@ -199,8 +198,8 @@ namespace VanillaChad.MonoBehaviors
                     break;
                     case "mayhem":
                         stoofs.Damage*=1.0f+(0.15f*negMult-0.15f);
-                        bounces+=(int)boost;
-                        // gunAmmo.reloadTimeAdd-=0.05f*(float)boost;
+                        scuff.Bounces+=(int)boost;
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "overpower":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
@@ -208,7 +207,7 @@ namespace VanillaChad.MonoBehaviors
                     case "parasite":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
                         stoofs.Damage*=1.0f+(0.3f*posMult-0.3f);
-                        // gunAmmo.reloadTimeAdd-=0.025f*(float)boost;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "phoenix":
                         stoofs.MaxHealth*=1.0f+(0.35f*negMult-0.35f);
@@ -221,7 +220,7 @@ namespace VanillaChad.MonoBehaviors
                         // N/A
                     break;
                     case "quick reload":
-                        // gunAmmo.reloadTimeMultiplier*=1.0f+(0.7f*posMult-0.7f);
+                        scuff.ReloadTimeMult/=1.0f+(0.7f*posMult-0.7f);
                     break;
                     case "quick shot":
                         stoofs.BulletSpeed*=1.0f+(1.5f*posMult-1.5f);
@@ -240,19 +239,20 @@ namespace VanillaChad.MonoBehaviors
                     break;
                     case "riccochet":
                         stoofs.AttackSpeed/=1.0f+(0.25f*posMult-0.25f);
-                        if (boost > 2) bounces++;
+                        if (boost > 2) scuff.Bounces++;
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "saw":
                         stoofs.MaxHealth*=1.0f+(0.3f*posMult-0.3f);
                     break;
                     case "scavenger":
-                        // N/A
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "shield charge":
                         // N/A
                     break;
                     case "shields up":
-                        // N/A
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "shockwave":
                         stoofs.MaxHealth*=1.0f+(0.5f*posMult-0.5f);
@@ -261,12 +261,13 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.MaxHealth*=1.0f+(0.25f*posMult-0.25f);
                     break;
                     case "sneaky bullets":
-                        // N/A
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "spray":
                         stoofs.AttackSpeed/=1.0f+(9.0f*posMult-9.0f);
                         stoofs.MaxAmmo+=(int)(boost*2);
                         stoofs.Damage*=1.0f+(0.75f*negMult-0.75f);
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "static field":
                         // N/A
@@ -274,6 +275,7 @@ namespace VanillaChad.MonoBehaviors
                     case "steady shot":
                         stoofs.MaxHealth*=1.0f+(0.4f*posMult-0.4f);
                         stoofs.BulletSpeed*=1.0f+(1.0f*posMult-1.0f);
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "supernova":
                         stoofs.MaxHealth*=1.0f+(0.5f*posMult-0.5f);
@@ -284,9 +286,10 @@ namespace VanillaChad.MonoBehaviors
                     case "tank":
                         stoofs.MaxHealth*=1.0f+(1.0f*posMult-1.0f);
                         stoofs.AttackSpeed/=1.0f+(0.25f*posMult-0.25f);
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "targetbounce":
-                        if (boost > 3) bounces++;
+                        if (boost > 3) scuff.Bounces++;
                         stoofs.Damage*=1.0f+(0.2f*negMult-0.2f);
                     break;
                     case "tasteofblood":
@@ -296,39 +299,39 @@ namespace VanillaChad.MonoBehaviors
                         // N/A
                     break;
                     case "thruster":
-                        // N/A
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "timed detonation":
                         stoofs.Damage*=1.0f+(0.15f*negMult-0.15f);
+                        scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "toxic cloud":
                         stoofs.Damage*=1.0f+(0.25f*negMult-0.25f);
                         stoofs.AttackSpeed/=1.0f+(0.2f*negMult-0.2f);
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "trickster":
                         stoofs.Damage*=1.0f+(0.2f*negMult-0.2f);
-                        if(boost > 2) bounces++;
+                        if(boost > 2) scuff.Bounces++;
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                     case "wind up":
                         stoofs.BulletSpeed*=1.0f+(1.0f*posMult-1.0f);
                         stoofs.Damage*=1.0f+(0.6f*posMult-0.6f);
                         stoofs.AttackSpeed/=1.0f+(1.0f*posMult-1.0f);
+                        scuff.ReloadTimeAdd-=0.05f*(float)boost;
                     break;
                 }
             }
             StatManager.Apply(player, stoofs);
+            StutManager.Apply(player, scuff);
         }
         
         public void OnPointStart() {
             GiveBuffs();
-            gun.reflects+=bounces;
         }       
         public override void OnRevive() {
             GiveBuffs();
-        }
-        public void OnPointEnd()
-        {
-            gun.reflects-=bounces;
         }
     }
 }

@@ -71,10 +71,10 @@ namespace VanillaChad.MonoBehaviors
                 MovementSpeed = multiplier,
                 JumpHeight = multiplier
             };
-            StatManager.Apply(player, stuffs);
             StutChanges scuffed = new StutChanges() {
                 ReloadTimeMult = 1/multiplier
             };
+            StatManager.Apply(player, stuffs);
             StutManager.Apply(player, scuffed);
         }
 
