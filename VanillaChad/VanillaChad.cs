@@ -20,7 +20,7 @@ namespace ChadVanilla
     {
         private const string ModId = "koala.vanilla.chad";
         private const string ModName = "Chad Vanilla";
-        public const string Version = "1.5.4";
+        public const string Version = "1.5.6";
         public const string ModInitials = "CHAD";
 
         internal static ChadVanilla instance;
@@ -40,10 +40,13 @@ namespace ChadVanilla
                 UnityEngine.Debug.Log("Chad Vanilla art asset bundle either doesn't exist or failed to load.");
             }
 
-            CustomCard.BuildCard<Chadious>((card) => {Chadious.card = card; card.SetAbbreviation("VC");});
-            CustomCard.BuildCard<VanPower>((card) => {VanPower.card = card; card.SetAbbreviation("VP");});
-            CustomCard.BuildCard<VanEnhance>((card) => {VanEnhance.card = card; card.SetAbbreviation("VE");});
-            CustomCard.BuildCard<VanThief>((card) => {VanThief.card = card; card.SetAbbreviation("VT");});
+            CustomCard.BuildCard<Chadious>((card) => {Chadious.card = card; card.SetAbbreviation("Vc");});
+            CustomCard.BuildCard<VanPower>((card) => {VanPower.card = card; card.SetAbbreviation("Vp");});
+            CustomCard.BuildCard<VanEnhan>((card) => {VanEnhan.card = card; card.SetAbbreviation("Ve");});
+            CustomCard.BuildCard<VanThief>((card) => {VanThief.card = card; card.SetAbbreviation("Vt");});
+            CustomCard.BuildCard<VanGains>((card) => {VanGains.card = card; card.SetAbbreviation("Vs");});
+            
+            //CustomCard.BuildCard<Rejectio>((card) => {Rejectio.card = card; card.SetAbbreviation("Re");});
 
         }
         public static bool Debug = false;

@@ -68,13 +68,13 @@ namespace VanillaChad.MonoBehaviors
                 Damage = multiplier,
                 AttackSpeed = 1/multiplier,
                 MaxHealth = multiplier,
-                MovementSpeed = 1+(1-multiplier)/2,
-                JumpHeight = 1+(1-multiplier/2)
+                MovementSpeed = multiplier,
+                JumpHeight = multiplier
             };
-            StatManager.Apply(player, stuffs);
             StutChanges scuffed = new StutChanges() {
                 ReloadTimeMult = 1/multiplier
             };
+            StatManager.Apply(player, stuffs);
             StutManager.Apply(player, scuffed);
         }
 

@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ModdingUtils.MonoBehaviours;
-using UnityEngine;
 
 namespace VanillaChad
 {
@@ -37,10 +32,10 @@ namespace VanillaChad
     public class StutChanges
     {
         public int
-            ReloadTimeAdd = 0,
             Bounces = 0;
 
         public float
+            ReloadTimeAdd = 0,
             ReloadTimeMult = 1;
     }
 
