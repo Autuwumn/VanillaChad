@@ -24,7 +24,7 @@ namespace ChadVanilla.Cards
             ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Ripped"),
             Rarity      = RarityUtils.GetRarity("Divine"),
-            Theme       = CardThemeColor.CardThemeColorType.TechWhite
+            Theme       = CardThemeColor.CardThemeColorType.MagicPink
         };
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers)
@@ -58,6 +58,7 @@ namespace ChadVanilla.Cards
             var baseAmmo = gunAmmo.maxAmmo;
             gunAmmo.maxAmmo+=(int)mult*baseAmmo;
             var baseReflects = gun.reflects;
+            if(baseReflects == 0) baseReflects = 1;
             gun.reflects+=(int)mult*baseReflects;
         }
         protected override void Removed(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
