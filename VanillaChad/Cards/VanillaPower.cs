@@ -22,7 +22,7 @@ namespace ChadVanilla.Cards
             ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Gladious"),
             Rarity      = RarityUtils.GetRarity("Epic"),
-            Theme       = CardThemeColor.CardThemeColorType.TechWhite,
+            Theme       = CardThemeColor.CardThemeColorType.MagicPink,
             Stats = new []
             {
                 new CardInfoStat
@@ -42,8 +42,10 @@ namespace VanillaChad.MonoBehaviors
     [DisallowMultipleComponent]
     public class VanPower_Mono : CardEffect
     {
+        private bool canBuff;
         private void GiveBuffs()
         {
+            if(!canBuff) return;
             double vanCards = 0.0;
             double vanPowers = 0.0;
             var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
@@ -79,10 +81,14 @@ namespace VanillaChad.MonoBehaviors
         }
 
         public void OnPointStart() {
+            canBuff = true;
             GiveBuffs();
         }
         public override void OnRevive() {
             GiveBuffs();
+        }
+        public void OnPointEnd() {
+            canBuff = false;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ChadVanilla.Cards
             ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_TrulyChad"),
             Rarity      = RarityUtils.GetRarity("Epic"),
-            Theme       = CardThemeColor.CardThemeColorType.TechWhite,
+            Theme       = CardThemeColor.CardThemeColorType.MagicPink,
             Stats = new []
             {
                 new CardInfoStat

@@ -20,7 +20,7 @@ namespace ChadVanilla
     {
         private const string ModId = "koala.vanilla.chad";
         private const string ModName = "Chad Vanilla";
-        public const string Version = "1.5.6";
+        public const string Version = "1.5.7";
         public const string ModInitials = "CHAD";
 
         internal static ChadVanilla instance;
@@ -46,8 +46,8 @@ namespace ChadVanilla
             CustomCard.BuildCard<VanThief>((card) => {VanThief.card = card; card.SetAbbreviation("Vt");});
             CustomCard.BuildCard<VanGains>((card) => {VanGains.card = card; card.SetAbbreviation("Vs");});
             
-            //CustomCard.BuildCard<Rejectio>((card) => {Rejectio.card = card; card.SetAbbreviation("Re");});
-
+            CustomCard.BuildCard<Rejectio>((card) => {Rejectio.card = card; card.SetAbbreviation("Re");});
+            CustomCard.BuildCard<Buff>((card) => {Buff.card = card; ModdingUtils.Utils.Cards.instance.AddHiddenCard(card);});
         }
         public static bool Debug = false;
     }

@@ -2,6 +2,8 @@ using RarityLib.Utils;
 using ModsPlus;
 using ClassesManagerReborn.Util;
 using UnboundLib;
+using CardChoiceSpawnUniqueCardPatch.CustomCategories;
+using UnityEngine;
 
 namespace ChadVanilla.Cards
 {
@@ -10,8 +12,7 @@ namespace ChadVanilla.Cards
         
         public static int chadCards = 0;
         internal static CardInfo card = null;
-
-        float[] deltas;
+        
         public override void Callback()
         {
             gameObject.GetOrAddComponent<ClassNameMono>().className = VanClass.name;
@@ -21,20 +22,23 @@ namespace ChadVanilla.Cards
             Title       = "Rejected Power",
             Description = "You have rejected your path",
             ModName     = ChadVanilla.ModInitials,
-            Art         = null,
-            Rarity      = RarityUtils.GetRarity("Epic"),
+            Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Ripped"),
+            Rarity      = RarityUtils.GetRarity("Divine"),
             Theme       = CardThemeColor.CardThemeColorType.TechWhite
         };
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers)
         {
             cardInfo.allowMultiple = false;
+            CustomCardCategories.instance.MakeCardsExclusive(Buff.card, Chadious.card);
+            CustomCardCategories.instance.MakeCardsExclusive(Buff.card, Rejectio.card);
         }
 
         protected override void Added(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
             card.SetAbbreviation(chadCards+"x");
-            float mult = (float)System.Math.Pow(1.2,(double)chadCards);
+            float mult = (float)System.Math.Pow(1.1,(double)chadCards);
+            float halfMult = 0.5f+mult/2f;
             cardInfo.cardStats = new []
             {
                 new CardInfoStat
@@ -45,34 +49,31 @@ namespace ChadVanilla.Cards
                     stat = "stats"
                 }
             };
-            // dmg, attackspeed, reloadtime, health, movespeed, jumpheight
-            deltas = new[] {gun.damage*mult,gun.attackSpeed/mult,gunAmmo.reloadTimeMultiplier/mult,player.data.maxHealth*mult,characterStats.movementSpeed*mult,characterStats.jump*mult};
-            /**gun.damage+=deltas[0];
-            gun.attackSpeed-=deltas[1];
-            gunAmmo.reloadTimeMultiplier-=deltas[2];
-            player.data.maxHealth+=deltas[3];
-            characterStats.movementSpeed+=deltas[4];
-            characterStats.jump+=deltas[5];**/
             gun.damage*=mult;
             gun.attackSpeed/=mult;
             gunAmmo.reloadTimeMultiplier/=mult;
             player.data.maxHealth*=mult;
-            characterStats.movementSpeed*=mult;
-            characterStats.jump*=mult;
-            gunAmmo.maxAmmo+=chadCards;
-            gun.reflects+=chadCards;
+            characterStats.movementSpeed*=halfMult;
+            characterStats.jump*=halfMult;
+            var baseAmmo = gunAmmo.maxAmmo;
+            gunAmmo.maxAmmo+=(int)mult*baseAmmo;
+            var baseReflects = gun.reflects;
+            gun.reflects+=(int)mult*baseReflects;
         }
         protected override void Removed(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            float mult = (float)System.Math.Pow(1.2,(double)chadCards);
-            gun.damage/=mult;
-            gun.attackSpeed*=mult;
-            gunAmmo.reloadTimeMultiplier*=mult;
-            player.data.maxHealth/=mult;
-            characterStats.movementSpeed/=mult;
-            characterStats.jump/=mult;
-            gunAmmo.maxAmmo-=chadCards;
-            gun.reflects-=chadCards;
+            float mult = (float)System.Math.Pow(1.1,(double)chadCards);
+            float halfMult = 0.5f+mult/2f;
+            gun.damage*=mult;
+            gun.attackSpeed/=mult;
+            gunAmmo.reloadTimeMultiplier/=mult;
+            player.data.maxHealth*=mult;
+            characterStats.movementSpeed*=halfMult;
+            characterStats.jump*=halfMult;
+            var baseAmmo = gunAmmo.maxAmmo;
+            gunAmmo.maxAmmo+=(int)mult*baseAmmo;
+            var baseReflects = gun.reflects;
+            gun.reflects+=(int)mult*baseReflects;
         }
     }
 }

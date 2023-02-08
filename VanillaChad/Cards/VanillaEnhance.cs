@@ -24,7 +24,7 @@ namespace ChadVanilla.Cards
             ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Enhancer"),
             Rarity      = RarityUtils.GetRarity("Epic"),
-            Theme       = CardThemeColor.CardThemeColorType.TechWhite,
+            Theme       = CardThemeColor.CardThemeColorType.MagicPink,
             Stats = new []
             {
                 new CardInfoStat
@@ -51,8 +51,10 @@ namespace VanillaChad.MonoBehaviors
     [DisallowMultipleComponent]
     public class VanEnhan_Mono : CardEffect
     {
+        private bool canBuff;
         private void GiveBuffs()
         {
+            if(!canBuff) return;
             var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
             double boost = 0.0;
@@ -328,10 +330,14 @@ namespace VanillaChad.MonoBehaviors
         }
         
         public void OnPointStart() {
+            canBuff = true;
             GiveBuffs();
         }       
         public override void OnRevive() {
             GiveBuffs();
+        }
+        public void OnPointEnd() {
+            canBuff = false;
         }
     }
 }

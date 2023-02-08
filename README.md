@@ -1,6 +1,6 @@
 # Vanilla Chad Mod
 
-Adds 1 Class and 5 Cards
+Adds 1 Class and 6 Cards
 - Vanilla Chad
 	- Gives 10x vanilla card chance
 
@@ -14,3 +14,5 @@ Adds 1 Class and 5 Cards
 	- Steals 2 vanilla cards from other players priotitising enemies
 - Vanilla Summoner
 	- Grants 1-5 random vanilla cards
+- Vanilla Rejection
+	- Reject your vanilla heritage and become stronger
