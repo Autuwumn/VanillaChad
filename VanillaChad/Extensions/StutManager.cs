@@ -1,7 +1,7 @@
 using System;
 using ModdingUtils.MonoBehaviours;
 
-namespace VanillaChad
+namespace ChadVanilla.Extensions
 {
     public class StutManager
     {

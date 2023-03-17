@@ -35,7 +35,11 @@ namespace ChadVanilla.Cards
         {
             var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
-            foreach (var vc in vanillaCards) if (card.cardName.ToLower() == vc.cardName.ToLower()) return true;
+            foreach (var vc in vanillaCards) if (card.cardName.ToLower() == vc.cardName.ToLower())
+                {
+                    chadCards++;
+                    return true;
+                }
             return false;
         }
         public bool isVanChad(CardInfo card)
@@ -66,13 +70,18 @@ namespace ChadVanilla.Cards
                     {
                         cardsOnPlayer.Add(i);
                     }
+                    if(isVan(card))
+                    {
+                        cardsOnPlayer.Add(i);
+                    }
                 }
                 Buff.chadCards = chadCards;
                 var removed = ModdingUtils.Utils.Cards.instance.RemoveCardsFromPlayer(player, cardsOnPlayer.ToArray());
                 ModdingUtils.Utils.CardBarUtils.instance.ShowImmediate(player, removed);
                 ChadVanilla.instance.ExecuteAfterFrames(20, () =>
                 {
-                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, Buff.card, false, ""+chadCards+"x", 0, 0);
+                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, Buff.card, false, null, 0, 0);
+                    ModdingUtils.Utils.CardBarUtils.instance.ShowCard(player, Buff.card);
                 });
             });
         }

@@ -1,8 +1,6 @@
 using RarityLib.Utils;
 using ModsPlus;
-using ClassesManagerReborn.Util;
 using UnboundLib;
-using CardChoiceSpawnUniqueCardPatch.CustomCategories;
 using UnityEngine;
 
 namespace ChadVanilla.Cards
@@ -12,11 +10,8 @@ namespace ChadVanilla.Cards
         
         public static int chadCards = 0;
         internal static CardInfo card = null;
+        private int realAmount = -2;
         
-        public override void Callback()
-        {
-            gameObject.GetOrAddComponent<ClassNameMono>().className = VanClass.name;
-        }
         public override CardDetails Details => new CardDetails
         {
             Title       = "Rejected Power",
@@ -30,15 +25,14 @@ namespace ChadVanilla.Cards
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers)
         {
             cardInfo.allowMultiple = false;
-            CustomCardCategories.instance.MakeCardsExclusive(Buff.card, Chadious.card);
-            CustomCardCategories.instance.MakeCardsExclusive(Buff.card, Rejectio.card);
+            ModdingUtils.Extensions.CardInfoExtension.GetAdditionalData(cardInfo).canBeReassigned = false;
         }
 
         protected override void Added(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            card.SetAbbreviation(chadCards+"x");
-            float mult = (float)System.Math.Pow(1.1,(double)chadCards);
-            float halfMult = 0.5f+mult/2f;
+            if(realAmount == -2) realAmount = chadCards;
+            card.SetAbbreviation(realAmount+"");
+            float mult = (float)System.Math.Pow(1.15,(double)realAmount);
             cardInfo.cardStats = new []
             {
                 new CardInfoStat
@@ -53,28 +47,8 @@ namespace ChadVanilla.Cards
             gun.attackSpeed/=mult;
             gunAmmo.reloadTimeMultiplier/=mult;
             player.data.maxHealth*=mult;
-            characterStats.movementSpeed*=halfMult;
-            characterStats.jump*=halfMult;
-            var baseAmmo = gunAmmo.maxAmmo;
-            gunAmmo.maxAmmo+=(int)mult*baseAmmo;
-            var baseReflects = gun.reflects;
-            if(baseReflects == 0) baseReflects = 1;
-            gun.reflects+=(int)mult*baseReflects;
-        }
-        protected override void Removed(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
-        {
-            float mult = (float)System.Math.Pow(1.1,(double)chadCards);
-            float halfMult = 0.5f+mult/2f;
-            gun.damage*=mult;
-            gun.attackSpeed/=mult;
-            gunAmmo.reloadTimeMultiplier/=mult;
-            player.data.maxHealth*=mult;
-            characterStats.movementSpeed*=halfMult;
-            characterStats.jump*=halfMult;
-            var baseAmmo = gunAmmo.maxAmmo;
-            gunAmmo.maxAmmo+=(int)mult*baseAmmo;
-            var baseReflects = gun.reflects;
-            gun.reflects+=(int)mult*baseReflects;
+            gunAmmo.maxAmmo+=realAmount*3;
+            gun.reflects+=realAmount;
         }
     }
 }

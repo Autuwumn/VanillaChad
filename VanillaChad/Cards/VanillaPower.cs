@@ -2,9 +2,12 @@ using System.Reflection;
 using UnityEngine;
 using RarityLib.Utils;
 using UnboundLib;
-using VanillaChad.MonoBehaviors;
+using ChadVanilla.Extensions;
+using ChadVanilla.MonoBehaviors;
 using ModsPlus;
 using ClassesManagerReborn.Util;
+using System.Collections;
+using UnboundLib.GameModes;
 
 namespace ChadVanilla.Cards
 {
@@ -21,31 +24,29 @@ namespace ChadVanilla.Cards
             Description = "Gain compounding stats for every vanilla card owned",
             ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Gladious"),
-            Rarity      = RarityUtils.GetRarity("Epic"),
+            Rarity      = CardInfo.Rarity.Rare,
             Theme       = CardThemeColor.CardThemeColorType.MagicPink,
             Stats = new []
             {
                 new CardInfoStat
                 {
-                    amount = "+5%",
+                    amount = "+0.5%",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
-                    stat = "basic stats per"
+                    stat = "basic stats per vanilla card every point"
                 }
             }
         };
     }
 }
 
-namespace VanillaChad.MonoBehaviors
+namespace ChadVanilla.MonoBehaviors
 {   
     [DisallowMultipleComponent]
     public class VanPower_Mono : CardEffect
     {
-        private bool canBuff;
         private void GiveBuffs()
         {
-            if(!canBuff) return;
             double vanCards = 0.0;
             double vanPowers = 0.0;
             var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
@@ -64,31 +65,21 @@ namespace VanillaChad.MonoBehaviors
                     vanPowers++;
                 }
             }
-            double numboo = System.Math.Pow(1.05,(1.0+vanPowers)/2.0);
+            double numboo = System.Math.Pow(1.005,vanPowers);
             float multiplier = (float)System.Math.Pow(numboo,vanCards);
-            StatChanges stuffs = new StatChanges() {
-                Damage = multiplier,
-                AttackSpeed = 1/multiplier,
-                MaxHealth = multiplier,
-                MovementSpeed = multiplier,
-                JumpHeight = multiplier
-            };
-            StutChanges scuffed = new StutChanges() {
-                ReloadTimeMult = 1/multiplier
-            };
-            StatManager.Apply(player, stuffs);
-            StutManager.Apply(player, scuffed);
+            gun.damage *= multiplier;
+            gunAmmo.reloadTimeMultiplier /= multiplier;
+            gun.attackSpeed *= multiplier;
+            gun.projectileSpeed *= multiplier;
+            gun.attackSpeed /= multiplier;
+            characterStats.health *= multiplier;
+            characterStats.movementSpeed *= multiplier;
         }
 
-        public void OnPointStart() {
-            canBuff = true;
+        public override IEnumerator OnPointStart(IGameModeHandler gameModeHandler)
+        {
             GiveBuffs();
-        }
-        public override void OnRevive() {
-            GiveBuffs();
-        }
-        public void OnPointEnd() {
-            canBuff = false;
+            yield break;
         }
     }
 }

@@ -2,9 +2,13 @@ using System.Reflection;
 using UnityEngine;
 using RarityLib.Utils;
 using UnboundLib;
-using VanillaChad.MonoBehaviors;
+using ChadVanilla.MonoBehaviors;
+using ChadVanilla.Extensions;
+using ChadVanilla.Cards;
 using ModsPlus;
 using ClassesManagerReborn.Util;
+using System.Collections;
+using UnboundLib.GameModes;
 
 namespace ChadVanilla.Cards
 {
@@ -23,44 +27,42 @@ namespace ChadVanilla.Cards
             Description = "Enhance your vanilla cards",
             ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Enhancer"),
-            Rarity      = RarityUtils.GetRarity("Epic"),
+            Rarity      = CardInfo.Rarity.Rare,
             Theme       = CardThemeColor.CardThemeColorType.MagicPink,
             Stats = new []
             {
                 new CardInfoStat
                 {
-                    amount = "+20%",
+                    amount = "+2%",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
-                    stat = "Positive Vanilla Card Stats"
+                    stat = "Positive Vanilla Card Stats Per Point"
                 },
                 new CardInfoStat
                 {
-                    amount = "-10%",
+                    amount = "-1%",
                     positive = true,
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned,
-                    stat = "Negative Vanilla Card Stats"
+                    stat = "Negative Vanilla Card Stats Per Point"
                 }
             }
         };
     }
 }
 
-namespace VanillaChad.MonoBehaviors
+namespace ChadVanilla.MonoBehaviors
 {   
     [DisallowMultipleComponent]
     public class VanEnhan_Mono : CardEffect
     {
-        private bool canBuff;
         private void GiveBuffs()
         {
-            if(!canBuff) return;
             var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
             double boost = 0.0;
             for (int i = 0; i < player.data.currentCards.Count; i++) if (player.data.currentCards[i].cardName.ToLower() == "Vanilla Enhance".ToLower()) boost++;
-            float posMult = (float)System.Math.Pow(1.2,boost);
-            float negMult = (float)System.Math.Pow(1.1,boost);
+            float posMult = (float)System.Math.Pow(1.02,boost);
+            float negMult = (float)System.Math.Pow(1.01,boost);
             StatChanges stoofs = new StatChanges{};
             StutChanges scuff = new StutChanges{};
             for (int i = 0; i < player.data.currentCards.Count; i++)
@@ -99,6 +101,7 @@ namespace VanillaChad.MonoBehaviors
                         stoofs.Damage*=1.0f+(0.6f*negMult-0.6f);
                         stoofs.MaxAmmo+=(int)boost;
                         stoofs.Bullets+=(int)(boost/2.0f);
+                        stoofs.BulletSpeed *= 1.0f + (2.0f * posMult - 2.0f);
                         scuff.ReloadTimeAdd-=0.025f*(float)boost;
                     break;
                     case "burst":
@@ -325,19 +328,17 @@ namespace VanillaChad.MonoBehaviors
                     break;
                 }
             }
-            StatManager.Apply(player, stoofs);
-            StutManager.Apply(player, scuff);
+            gun.damage *= stoofs.Damage;
+            gun.attackSpeed *= stoofs.AttackSpeed;
+            characterStats.health *= stoofs.MaxHealth;
+            gun.projectileSpeed *= stoofs.BulletSpeed;
+            gunAmmo.reloadTimeMultiplier += scuff.ReloadTimeMult;
         }
-        
-        public void OnPointStart() {
-            canBuff = true;
+
+        public override IEnumerator OnPointStart(IGameModeHandler gameModeHandler)
+        {
             GiveBuffs();
-        }       
-        public override void OnRevive() {
-            GiveBuffs();
-        }
-        public void OnPointEnd() {
-            canBuff = false;
+            yield break;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnboundLib.Cards;
 using Jotunn.Utils;
 using UnityEngine;
 using ModsPlus;
+using CardChoiceSpawnUniqueCardPatch.CustomCategories;
 
 namespace ChadVanilla
 {
@@ -20,13 +21,13 @@ namespace ChadVanilla
     {
         private const string ModId = "koala.vanilla.chad";
         private const string ModName = "Chad Vanilla";
-        public const string Version = "1.5.7";
+        public const string Version = "1.6.5";
         public const string ModInitials = "CHAD";
 
         internal static ChadVanilla instance;
         internal static AssetBundle ArtAssets;
 
-        void Start()
+        public void Start()
         {
             var harmony = new Harmony(ModId);
             harmony.PatchAll();
@@ -46,8 +47,13 @@ namespace ChadVanilla
             CustomCard.BuildCard<VanThief>((card) => {VanThief.card = card; card.SetAbbreviation("Vt");});
             CustomCard.BuildCard<VanGains>((card) => {VanGains.card = card; card.SetAbbreviation("Vs");});
             
-            CustomCard.BuildCard<Rejectio>((card) => {Rejectio.card = card; card.SetAbbreviation("Re");});
-            CustomCard.BuildCard<Buff>((card) => {Buff.card = card; ModdingUtils.Utils.Cards.instance.AddHiddenCard(card);});
+            //CustomCard.BuildCard<Rejectio>((card) => {Rejectio.card = card; card.SetAbbreviation("Re");});
+            //CustomCard.BuildCard<Buff>((card) => {Buff.card = card; ModdingUtils.Utils.Cards.instance.AddHiddenCard(card);});
+
+            //CustomCardCategories.instance.MakeCardsExclusive(Buff.card, Chadious.card);
+            //CustomCardCategories.instance.MakeCardsExclusive(Buff.card, Rejectio.card);
+            //CustomCardCategories.instance.MakeCardsExclusive(Chadious.card, Buff.card);
+            //CustomCardCategories.instance.MakeCardsExclusive(Rejectio.card, Buff.card);
         }
         public static bool Debug = false;
     }

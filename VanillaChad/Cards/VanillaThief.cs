@@ -19,17 +19,21 @@ namespace ChadVanilla.Cards
         public override CardDetails Details => new CardDetails
         {
             Title       = "Vanilla Thief",
-            Description = "Steal some vanilla cards from other players",
+            Description = "Attempt to steal some vanilla cards from other players",
             ModName     = ChadVanilla.ModInitials,
             Art         = ChadVanilla.ArtAssets.LoadAsset<GameObject>("C_Thiefy"),
-            Rarity      = RarityUtils.GetRarity("Epic"),
+            Rarity      = CardInfo.Rarity.Rare,
             Theme       = CardThemeColor.CardThemeColorType.MagicPink
         };
+        public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers)
+        {
+            ModdingUtils.Extensions.CardInfoExtension.GetAdditionalData(cardInfo).canBeReassigned = false;
+        }
         public bool isVan(CardInfo card)
         {
             var fieldInfo = typeof(UnboundLib.Utils.CardManager).GetField("defaultCards", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             var vanillaCards = (CardInfo[])fieldInfo.GetValue(null);
-            foreach (var vc in vanillaCards) if (card.cardName.ToLower() == vc.cardName.ToLower()) return true;
+            foreach (var vc in vanillaCards) if (card.cardName.ToLower().Equals(vc.cardName.ToLower())) return true;
             return false;
         }
         protected override void Added(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
